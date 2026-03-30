@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SafeHer - Cyber Shield</title>
+<script src="/js/tailwind.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed-variant": "#6c3a00",
+              "on-primary": "#003918",
+              "tertiary-fixed": "#ffdcc1",
+              "on-secondary-container": "#f2f3ff",
+              "inverse-on-surface": "#313031",
+              "surface-bright": "#3a393a",
+              "surface-container-high": "#2a2a2b",
+              "inverse-primary": "#896790",
+              "tertiary": "#ffdec5",
+              "primary": "#ffe1f5",
+              "on-secondary-fixed": "#001945",
+              "tertiary-container": "#ffba7d",
+              "secondary-container": "#896790",
+              "on-error-container": "#ffdad6",
+              "on-error": "#690005",
+              "on-tertiary": "#4c2700",
+              "surface": "#131314",
+              "on-primary-fixed": "#2e1500",
+              "secondary-fixed": "#f9edfd",
+              "surface-variant": "#353436",
+              "outline": "#896790",
+              "error-container": "#93000a",
+              "surface-container-low": "#1c1b1c",
+              "primary-container": "#ffe1f5",
+              "outline-variant": "#3b4a3d",
+              "on-secondary-fixed-variant": "#00429b",
+              "on-surface-variant": "#b9abbc",
+              "surface-container-highest": "#353436",
+              "background": "#1e1b1d",
+              "surface-container": "#201f20",
+              "primary-fixed": "#ffe1f5",
+              "on-surface": "#e5e2e3",
+              "on-tertiary-fixed": "#2e1500",
+              "surface-tint": "#896790",
+              "secondary": "#ffe1f5",
+              "error": "#ffb4ab",
+              "on-background": "#e5e2e3",
+              "surface-dim": "#131314",
+              "tertiary-fixed-dim": "#ffb778",
+              "on-primary-container": "#6f4f76",
+              "on-secondary": "#6f4f76",
+              "surface-container-lowest": "#0e0e0f",
+              "inverse-surface": "#e5e2e3",
+              "on-tertiary-container": "#7f4500",
+              "primary-fixed-dim": "#ffe1f5",
+              "secondary-fixed-dim": "#ffe1f5",
+              "on-primary-fixed-variant": "#896790",
+              "aegis-purple": "#896790",
+              "aegis-pink": "#ffe1f5",
+              "aegis-soft": "#f9edfd"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem", "2xl": "1rem", "3xl": "1.5rem"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-morphism {
+        background: rgba(30, 27, 29, 0.7);
+        backdrop-filter: blur(20px);
+      }
+      .glow-primary {
+        box-shadow: 0 0 15px rgba(255, 225, 245, 0.15);
+      }
+      .glow-secondary {
+        box-shadow: 0 0 20px rgba(137, 103, 144, 0.2);
+      }
+      .pulse-ai {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .5; }
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-aegis-pink/30">
+<!-- Top Navigation: Using DATA:COMPONENTS:COMPONENTS_11 TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 sticky top-0 z-50 bg-[#fff7fb] dark:bg-[#1e1b1d]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 overflow-hidden">
+<img src="/img/logo.jpg" alt="SafeHer Logo" class="w-full h-full object-cover p-1 rounded-full drop-shadow-sm" />
+</div>
+<span class="font-['Space_Grotesk'] font-black text-[#6f4f76] dark:text-[#ffe1f5] tracking-widest">SAFEHER</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#6f4f76] dark:text-[#ffe1f5]" data-icon="verified_user">verified_user</span>
+</div>
+<div class="absolute bottom-0 left-0 bg-gradient-to-b from-[#f9f1f5] to-transparent h-1 w-full"></div>
+</header>
+<main class="pt-8 pb-32 px-6 max-w-6xl mx-auto space-y-8">
+<!-- Hero Section: Scan Area -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<div class="lg:col-span-7 bg-surface-container-low rounded-3xl p-8 relative overflow-hidden group border border-aegis-purple/10">
+<div class="absolute top-0 right-0 p-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-aegis-pink pulse-ai"></div>
+<span class="text-[10px] font-bold text-aegis-pink uppercase tracking-widest font-label">AI Co-Pilot Active</span>
+</div>
+</div>
+<h2 class="text-3xl font-headline font-bold text-on-surface mb-2 tracking-tight">Cyber Shield</h2>
+<p class="text-on-surface-variant mb-8 max-w-md">Forensic-grade threat detection. Upload screenshots of suspicious messages or interactions for immediate AI analysis.</p>
+<div class="border-2 border-dashed border-aegis-purple/30 rounded-2xl p-12 flex flex-col items-center justify-center bg-surface-container-lowest/50 hover:bg-surface-container-lowest transition-all group-hover:border-aegis-pink/50 cursor-pointer" onclick="document.getElementById('evidence-upload').click()">
+<input type="file" id="evidence-upload" accept="image/*,.pdf" multiple class="hidden" onchange="const cnt = this.files.length; if(cnt > 0) alert(cnt + ' file(s) loaded. AI Analysis starting...');" />
+<span class="material-symbols-outlined text-4xl text-aegis-pink mb-4" data-icon="cloud_upload">cloud_upload</span>
+<p class="text-on-surface font-medium mb-1">Drop screenshots here</p>
+<p class="text-on-surface-variant text-sm">WhatsApp, Insta DMs, or Email</p>
+<button class="mt-6 px-6 py-2 bg-aegis-pink text-[#6f4f76] font-bold rounded-full text-sm tracking-wide transition-transform active:scale-95 shadow-lg shadow-aegis-pink/10 pointer-events-none">SELECT FILES</button>
+</div>
+</div>
+<!-- AI Analysis Result Card -->
+<div class="lg:col-span-5 flex flex-col gap-4">
+<div class="bg-surface-container-high rounded-3xl p-6 glow-secondary border-b-2 border-aegis-purple/30">
+<div class="flex justify-between items-start mb-6">
+<span class="px-3 py-1 bg-aegis-purple/20 text-aegis-pink text-[10px] font-bold rounded-full uppercase tracking-tighter">Analysis Complete</span>
+<span class="material-symbols-outlined text-aegis-pink" data-icon="verified_user">verified_user</span>
+</div>
+<div class="space-y-6">
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase font-bold tracking-widest mb-1">Threat Type</p>
+<h3 class="text-2xl font-headline text-aegis-pink">Harassment</h3>
+</div>
+<div>
+<p class="text-on-surface-variant text-[10px] uppercase font-bold tracking-widest mb-2">Severity Level</p>
+<div class="flex gap-1.5">
+<div class="h-1.5 flex-1 bg-aegis-pink rounded-full"></div>
+<div class="h-1.5 flex-1 bg-aegis-pink rounded-full"></div>
+<div class="h-1.5 flex-1 bg-aegis-pink rounded-full"></div>
+<div class="h-1.5 flex-1 bg-aegis-pink rounded-full"></div>
+<div class="h-1.5 flex-1 bg-surface-variant rounded-full"></div>
+<span class="ml-2 text-aegis-pink text-xs font-bold font-headline">4 / 5</span>
+</div>
+</div>
+<div class="bg-aegis-purple/10 p-4 rounded-2xl border border-aegis-pink/10">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-aegis-pink" data-icon="gavel">gavel</span>
+<div>
+<p class="text-aegis-pink text-[10px] uppercase font-bold tracking-widest mb-1">Recommended Action</p>
+<p class="text-on-surface font-medium text-sm">Report to Cyber Police immediately. Preservation of evidence recommended.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pattern Monitor & Legal Assistant Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Pattern Monitor -->
+<div class="bg-surface-container-low rounded-3xl p-6 flex flex-col border border-aegis-purple/10">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-aegis-pink" data-icon="query_stats">query_stats</span>
+<h3 class="font-headline font-bold text-on-surface">Pattern Monitor</h3>
+</div>
+<div class="space-y-4 flex-grow">
+<div class="p-4 bg-surface-container-lowest rounded-2xl flex items-center justify-between">
+<div>
+<p class="text-xs text-on-surface font-medium">Recent Followers</p>
+<p class="text-[10px] text-on-surface-variant">12 new accounts analyzed</p>
+</div>
+<span class="text-aegis-pink text-xs font-bold tracking-tighter">SECURE</span>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded-2xl">
+<div class="flex justify-between items-center mb-2">
+<p class="text-xs text-on-surface font-medium">Deepfake Detection</p>
+<span class="text-aegis-pink text-[10px] font-bold pulse-ai">SCANNING</span>
+</div>
+<div class="w-full h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="w-2/3 h-full bg-aegis-purple"></div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-lowest rounded-2xl flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-lg" data-icon="block">block</span>
+</div>
+<div>
+<p class="text-xs text-on-surface font-medium">Suspected Bot Cluster</p>
+<p class="text-[10px] text-on-surface-variant">4 profiles flagged</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Legal Assistant -->
+<div class="md:col-span-2 bg-surface-container-low rounded-3xl p-6 relative overflow-hidden border border-aegis-purple/10">
+<div class="absolute top-0 right-0 w-32 h-32 bg-aegis-pink/5 blur-3xl -mr-16 -mt-16"></div>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-aegis-pink" data-icon="description">description</span>
+<h3 class="font-headline font-bold text-on-surface">Legal Assistant</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="bg-surface-container-high p-5 rounded-2xl border border-aegis-purple/20 hover:border-aegis-pink/40 transition-colors">
+<h4 class="text-sm font-bold text-on-surface mb-2">File FIR Template</h4>
+<p class="text-xs text-on-surface-variant mb-4">Auto-generate a legally formatted complaint based on detected threats.</p>
+<button class="w-full py-2 bg-aegis-purple/20 text-aegis-pink text-xs font-bold rounded-xl tracking-wide uppercase hover:bg-aegis-purple/30">Generate PDF</button>
+</div>
+<div class="bg-surface-container-high p-5 rounded-2xl border border-aegis-purple/20 hover:border-aegis-pink/40 transition-colors">
+<h4 class="text-sm font-bold text-on-surface mb-2">Official Portal</h4>
+<p class="text-xs text-on-surface-variant mb-4">Direct secure link to national cybercrime reporting portal.</p>
+<a class="block w-full py-2 bg-aegis-pink/10 text-aegis-pink text-xs font-bold rounded-xl tracking-wide uppercase text-center hover:bg-aegis-pink/20" href="https://cybercrime.gov.in" target="_blank">Visit cybercrime.gov.in</a>
+</div>
+</div>
+<div class="mt-6 p-4 rounded-2xl bg-surface-container-lowest border-l-4 border-aegis-pink flex items-start gap-4">
+<span class="material-symbols-outlined text-aegis-pink mt-1" data-icon="info">info</span>
+<div>
+<p class="text-xs font-bold text-on-surface uppercase tracking-tight">Pro-Tip</p>
+<p class="text-xs text-on-surface-variant leading-relaxed">Always take screenshots of the offender's profile URL and the full chat window before blocking. Our generator will include these as evidence attachments.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Threat Log / History -->
+<section class="bg-surface-container-low rounded-3xl p-8 border border-aegis-purple/10">
+<h3 class="font-headline font-bold text-on-surface mb-6">Incident Log</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-aegis-purple font-mono">OCT 24</span>
+<p class="text-sm font-medium">Instagram Impersonation Attempt</p>
+</div>
+<span class="px-2 py-0.5 bg-aegis-pink/20 text-aegis-pink text-[10px] font-bold rounded-md">RESOLVED</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-4">
+<span class="text-[10px] text-aegis-purple font-mono">OCT 12</span>
+<p class="text-sm font-medium">Suspicious WhatsApp Link Scan</p>
+</div>
+<span class="px-2 py-0.5 bg-surface-variant text-on-surface-variant text-[10px] font-bold rounded-md">CLEAN</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar: Using DATA:COMPONENTS:COMPONENTS_11 BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fff7fb]/80 dark:bg-[#1e1b1d]/80 backdrop-blur-xl border-t border-[#896790]/10 shadow-[0_-8px_30px_rgb(137,103,144,0.08)] rounded-t-[2rem]">
+<a class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform" href="/index.html">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Hub</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform" href="/map-fullscreen.html">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform" href="/ride-guardian-pastel.html">
+<span class="material-symbols-outlined" data-icon="directions_run">directions_run</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Ride</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-[#ffe1f5] dark:bg-[#6f4f76] text-[#6f4f76] dark:text-[#ffffff] rounded-2xl px-5 py-2 transition-all duration-300" href="/cyber-shield.html">
+<span class="material-symbols-outlined" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Shield</span>
+</a>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/app.js"></script>
+</body></html>

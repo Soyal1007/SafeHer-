@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>SafeHer | Live Evidence Feed</title>
+    <script src="/js/tailwind.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: { extend: { colors: { "primary": "#896790", "error": "#ffb4ab" } } }
+        }
+    </script>
+    <style>
+        body { overflow: hidden; margin: 0; background: #000; }
+        @keyframes pulse-dot { 0%,100%{opacity:1}50%{opacity:0.3} }
+        @keyframes scanline { 0%{top:-5%}100%{top:105%} }
+        .scan-bar {
+            position: absolute; left: 0; width: 100%; height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(255,180,171,0.6), transparent);
+            animation: scanline 3s linear infinite;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-black text-white h-screen w-screen flex flex-col relative">
+
+    <!-- MAIN BACK CAMERA — fullscreen background -->
+    <video id="cam-back" autoplay playsinline muted
+        class="absolute inset-0 w-full h-full object-cover"
+        style="z-index:1;"></video>
+
+    <!-- FRONT CAMERA — PIP top-right -->
+    <div style="position:absolute;top:12px;right:12px;width:120px;border-radius:14px;overflow:hidden;border:2px solid rgba(255,255,255,0.35);z-index:20;background:#000;aspect-ratio:3/4;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+        <video id="cam-front" autoplay playsinline muted style="width:100%;height:100%;object-fit:cover;transform:scaleX(-1);"></video>
+        <div style="position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:8px;font-weight:900;letter-spacing:1px;color:rgba(255,255,255,0.7);">FRONT</div>
+    </div>
+
+    <!-- SCANLINE EFFECT -->
+    <div class="scan-bar" style="z-index:5;"></div>
+
+    <!-- HUD OVERLAY -->
+    <div style="position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;justify-content:space-between;padding:12px;background:linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 35%, transparent 55%, rgba(0,0,0,0.85) 100%);">
+
+        <!-- TOP BAR -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:10px;height:10px;border-radius:50%;background:#f44336;animation:pulse-dot 1s infinite;"></div>
+                <span style="font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:2px;color:white;">LIVE EVIDENCE</span>
+            </div>
+            <div style="font-family:monospace;font-weight:bold;font-size:18px;color:white;" id="ev-timer">00:00</div>
+        </div>
+
+        <!-- BOTTOM SECTION -->
+        <div style="display:flex;flex-direction:column;gap:10px;">
+
+            <!-- STATUS CHIPS -->
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(76,175,80,0.5);padding:6px 12px;border-radius:50px;">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse-dot 1s infinite;"></span>
+                    <span style="font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:white;" id="ev-location">GPS Syncing...</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(255,180,171,0.5);padding:6px 12px;border-radius:50px;">
+                    <span style="width:7px;height:7px;border-radius:50%;background:#ffb4ab;animation:pulse-dot 1.5s infinite;"></span>
+                    <span style="font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:white;">Audio Scene Analysis</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);border:1px solid rgba(137,103,144,0.5);padding:6px 12px;border-radius:50px;">
+                    <span style="font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px;color:white;">Dispatch Link: ENCRYPTED</span>
+                </div>
+            </div>
+
+            <!-- ABORT BUTTON -->
+            <button id="abort-btn" style="
+                width:100%; position:relative; padding:20px 32px;
+                border-radius:20px; background:rgba(255,180,171,0.12);
+                border:1.5px solid rgba(255,180,171,0.4); color:#ffb4ab;
+                overflow:hidden; touch-action:none;
+                user-select:none; -webkit-user-select:none;
+                font-family:'Space Grotesk',sans-serif;
+                backdrop-filter:blur(10px);
+            ">
+                <div id="abort-progress" style="position:absolute;top:0;left:0;height:100%;width:0%;background:rgba(255,180,171,0.25);transition:none;"></div>
+                <div style="position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:12px;">
+                    <span class="material-symbols-outlined">cancel</span>
+                    <span style="font-weight:900;font-size:1rem;letter-spacing:2px;text-transform:uppercase;">Hold 3s — Abort SOS</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+    <script>
+        // ===== CAMERA SETUP =====
+        async function initEvidenceCameras() {
+            const backVid = document.getElementById('cam-back');
+            const frontVid = document.getElementById('cam-front');
+
+            // Back camera (main display)
+            try {
+                const backStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { exact: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } },
+                    audio: false
+                });
+                if (backVid) backVid.srcObject = backStream;
+            } catch(e) {
+                try {
+                    const backStream2 = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'environment' }, audio: false
+                    });
+                    if (backVid) backVid.srcObject = backStream2;
+                } catch(e2) {
+                    // Final fallback: any camera
+                    try {
+                        const anyStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                        if (backVid) backVid.srcObject = anyStream;
+                    } catch(e3) { console.warn('[Evidence] No camera available:', e3.message); }
+                }
+            }
+
+            // Front camera (PIP)
+            try {
+                const frontStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: { ideal: 480 }, height: { ideal: 640 } },
+                    audio: false
+                });
+                if (frontVid) frontVid.srcObject = frontStream;
+            } catch(e) { console.warn('[Evidence] Front cam unavailable:', e.message); }
+        }
+
+        initEvidenceCameras();
+
+        // ===== RECORDING TIMER =====
+        let recSec = 0;
+        const timerEl = document.getElementById('ev-timer');
+        setInterval(() => {
+            recSec++;
+            const m = String(Math.floor(recSec / 60)).padStart(2, '0');
+            const s = String(recSec % 60).padStart(2, '0');
+            if (timerEl) timerEl.textContent = m + ':' + s;
+        }, 1000);
+
+        // ===== GPS LABEL =====
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+                const el = document.getElementById('ev-location');
+                if (el) el.textContent = `GPS [${pos.coords.longitude.toFixed(4)}, ${pos.coords.latitude.toFixed(4)}]`;
+            }, () => {
+                const el = document.getElementById('ev-location');
+                if (el) el.textContent = 'GPS Signal Lost';
+            });
+        }
+
+        // ===== 3s HOLD TO ABORT =====
+        const abortBtn = document.getElementById('abort-btn');
+        const abortProg = document.getElementById('abort-progress');
+        let abortTimer = null, abortTick = null, abortStart = null, abortDone = false;
+
+        const startAbort = (e) => {
+            if (abortDone) return;
+            if (e.cancelable) e.preventDefault();
+            abortStart = Date.now();
+            abortBtn.style.transform = 'scale(0.97)';
+
+            abortTimer = setTimeout(() => {
+                if (abortDone) return;
+                abortDone = true;
+                clearInterval(abortTick);
+
+                // Stop all camera streams on this page
+                [document.getElementById('cam-back'), document.getElementById('cam-front')].forEach(v => {
+                    if (v && v.srcObject) v.srcObject.getTracks().forEach(t => t.stop());
+                });
+
+                // Signal app.js to also shut down Aegis sensors
+                if (typeof window.stopAegisSensors === 'function') {
+                    window.stopAegisSensors();
+                }
+
+                location.href = '/';
+            }, 3000);
+
+            abortTick = setInterval(() => {
+                if (!abortStart) return;
+                const pct = Math.min(((Date.now() - abortStart) / 3000) * 100, 100);
+                if (abortProg) abortProg.style.width = pct + '%';
+            }, 30);
+        };
+
+        const endAbort = () => {
+            if (abortDone) return;
+            clearTimeout(abortTimer);
+            clearInterval(abortTick);
+            abortStart = null;
+            abortBtn.style.transform = 'scale(1)';
+            if (abortProg) abortProg.style.width = '0%';
+        };
+
+        abortBtn.addEventListener('mousedown', startAbort);
+        abortBtn.addEventListener('touchstart', startAbort, { passive: false });
+        abortBtn.addEventListener('mouseup', endAbort);
+        abortBtn.addEventListener('touchend', endAbort);
+        abortBtn.addEventListener('mouseleave', endAbort);
+        abortBtn.addEventListener('touchcancel', endAbort);
+    </script>
+</body>
+</html>

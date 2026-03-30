@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>SAFEHER | Full Map</title>
+    <script src="/js/tailwind.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: { colors: { "primary": "#896790" } },
+                fontFamily: { "headline": ["Space Grotesk"], "body": ["Inter"] }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        body { min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        #leaflet-map { flex: 1; width: 100%; }
+        .tap-highlight-transparent { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body class="bg-[#fff7fb] text-[#4c3a50] font-body">
+
+    <!-- Header -->
+    <header class="flex justify-between items-center w-full px-6 py-4 z-50 bg-[#fff7fb] shadow-md">
+        <div class="flex items-center gap-3">
+            <span class="font-['Space_Grotesk'] font-black text-[#6f4f76] tracking-widest text-2xl">SAFE MAP</span>
+        </div>
+        <button class="text-[#6f4f76] hover:bg-[#ffe1f5] transition-colors p-2 rounded-full" onclick="showOnlySafeZones()">
+            <span class="material-symbols-outlined font-bold text-primary">verified_user</span>
+            <span class="text-xs font-bold block">Safe Zones</span>
+        </button>
+    </header>
+
+    <!-- Map Container directly attached -->
+    <div id="leaflet-map"></div>
+
+    <!-- Bottom Navigation Bar Placeholder -->
+    <nav class="fixed bottom-0 left-0 w-full z-[99999] flex justify-around items-center px-4 pb-6 pt-3 bg-[#fff7fb]/90 backdrop-blur-xl border-t border-[#896790]/10 shadow-[0_-8px_30px_rgb(137,103,144,0.08)] rounded-t-[2rem]">
+        <a href="/index.html" class="flex flex-col items-center justify-center text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform tap-highlight-transparent">
+            <span class="material-symbols-outlined">grid_view</span>
+            <span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Hub</span>
+        </a>
+        <a href="/map-fullscreen.html" class="flex flex-col items-center justify-center bg-[#ffe1f5] text-[#6f4f76] rounded-2xl px-5 py-2 transition-all tap-highlight-transparent">
+            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+            <span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Map</span>
+        </a>
+        <a href="/ride-guardian-pastel.html" class="flex flex-col items-center justify-center text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform tap-highlight-transparent">
+            <span class="material-symbols-outlined">directions_run</span>
+            <span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Ride</span>
+        </a>
+        <a href="/cyber-shield.html" class="flex flex-col items-center justify-center text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform tap-highlight-transparent">
+            <span class="material-symbols-outlined">security</span>
+            <span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Shield</span>
+        </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/map.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "SafeHer",
+  "short_name": "SafeHer",
+  "description": "Next-Generation Women Safety Platform",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#fff7fb",
+  "theme_color": "#896790",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/img/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/img/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}

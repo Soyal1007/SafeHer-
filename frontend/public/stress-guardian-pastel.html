@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="/js/tailwind.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#896790",
+            "secondary": "#ffe1f5",
+            "background": "#f9f1f5",
+            "surface": "#ffffff",
+            "on-surface": "#4a3a4d",
+            "on-surface-variant": "#6f4f76",
+            "outline": "#896790",
+            "outline-variant": "#d9c5dc",
+            "tertiary": "#6f4f76",
+            "error": "#b3261e",
+            "surface-container-low": "#fff7fb",
+            "surface-container-high": "#f3e8f0",
+            "surface-container-highest": "#e8dae6",
+          },
+          fontFamily: {
+            "headline": ["Space Grotesk"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+    }
+    .waveform-bar {
+      animation: pulse-height 1.5s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-height {
+      from { height: 20%; }
+      to { height: 100%; }
+    }
+    .stress-gradient {
+      background: linear-gradient(135deg, #896790 0%, #6f4f76 100%);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-[#f9f1f5] text-on-surface font-body selection:bg-secondary selection:text-tertiary">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center w-full px-6 py-4 sticky top-0 z-50 bg-[#fff7fb] dark:bg-[#1e1b1d]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<span class="font-['Space_Grotesk'] font-black text-[#6f4f76] dark:text-[#ffe1f5] tracking-widest text-2xl">SAFEHER</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-[#ffe1f5] dark:bg-[#896790]/20 rounded-full border border-primary/20">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-bold tracking-widest text-primary uppercase">Live Sync</span>
+</div>
+<span class="material-symbols-outlined text-[#6f4f76] dark:text-[#ffe1f5] cursor-pointer hover:bg-[#ffe1f5] dark:hover:bg-[#896790]/20 transition-colors p-1 rounded-full" data-icon="verified_user">verified_user</span>
+</div>
+<div class="absolute bottom-0 left-0 bg-gradient-to-b from-[#f9f1f5] to-transparent h-1 w-full"></div>
+</header>
+<main class="pt-8 pb-32 px-6 max-w-lg mx-auto">
+<!-- Hero Stress Monitor Section -->
+<section class="relative mb-8">
+<div class="flex flex-col items-center">
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Outer Ring Background -->
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="262" stroke-linecap="round" stroke-width="16"></circle>
+</svg>
+<div class="text-center z-10">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold block mb-1">Stress Score</span>
+<div class="font-headline font-black text-6xl text-primary">62<span class="text-2xl font-light opacity-50 text-on-surface">/100</span></div>
+<div class="mt-2 flex items-center justify-center gap-1 bg-primary/10 px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="warning">warning</span>
+<span class="text-[10px] font-bold text-primary uppercase tracking-tighter">Elevated State</span>
+</div>
+</div>
+<!-- Decorative Waveform Overlay -->
+<div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+<div class="flex items-end gap-1.5 h-20">
+<div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.1s"></div>
+<div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.4s"></div>
+<div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.2s"></div>
+<div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.6s"></div>
+<div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.3s"></div>
+<div class="w-1.5 bg-primary rounded-full waveform-bar" style="animation-delay: 0.5s"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Feedback Banner -->
+<div class="mb-8 p-5 glass-card rounded-3xl border-l-8 border-primary shadow-lg bg-white/80">
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="psychology">psychology</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-tertiary text-lg leading-tight">Stress detected. Are you okay?</h3>
+<p class="text-on-surface-variant text-sm mt-1 font-body">Guardian AI is actively monitoring background audio for safety signatures. Tap to confirm status.</p>
+</div>
+</div>
+</div>
+<!-- Threshold Progress Bar -->
+<div class="mb-10 px-2">
+<div class="flex justify-between items-end mb-3">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Distress Threshold</span>
+<span class="text-xs font-black text-primary">80%</span>
+</div>
+<div class="h-4 w-full bg-surface-container-highest rounded-full overflow-hidden p-[3px]">
+<div class="h-full bg-gradient-to-r from-secondary to-primary rounded-full shadow-sm" style="width: 62%"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-2 text-right italic font-medium">SOS triggers automatically at 80%</p>
+</div>
+<!-- Data Points Grid -->
+<div class="grid grid-cols-1 gap-4 mb-8">
+<div class="grid grid-cols-2 gap-4">
+<!-- HR -->
+<div class="bg-surface p-4 rounded-3xl flex flex-col gap-2 transition-transform active:scale-95 border border-outline-variant/30 shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-error/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-error" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+<div>
+<div class="text-[9px] uppercase font-bold text-on-surface-variant tracking-widest">Heart Rate</div>
+<div class="text-xl font-headline font-black text-on-surface">92 <span class="text-xs font-normal opacity-60">BPM</span></div>
+</div>
+</div>
+<!-- Voice -->
+<div class="bg-surface p-4 rounded-3xl flex flex-col gap-2 transition-transform active:scale-95 border border-outline-variant/30 shadow-sm">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="keyboard_voice">keyboard_voice</span>
+</div>
+<div>
+<div class="text-[9px] uppercase font-bold text-on-surface-variant tracking-widest">Voice Analysis</div>
+<div class="text-xl font-headline font-black text-on-surface">Normal</div>
+</div>
+</div>
+</div>
+<!-- Movement -->
+<div class="bg-surface p-4 rounded-3xl flex items-center gap-4 transition-transform active:scale-95 border border-outline-variant/30 shadow-sm">
+<div class="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="directions_walk">directions_walk</span>
+</div>
+<div class="flex-1">
+<div class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest">Movement Pattern</div>
+<div class="text-xl font-headline font-black text-on-surface">Brisk Walking</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<!-- Guardian Mode Toggle -->
+<div class="bg-primary p-6 rounded-[2rem] shadow-xl text-white">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="security_update_good">security_update_good</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-lg">Guardian Mode</h4>
+<p class="text-xs text-white/80">Active SOS Monitoring</p>
+</div>
+</div>
+<button class="relative inline-flex h-8 w-14 items-center rounded-full bg-white p-1 transition-colors">
+<span class="sr-only">Toggle Guardian Mode</span>
+<span class="inline-block h-6 w-6 transform rounded-full bg-primary transition translate-x-6"></span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Component -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fff7fb]/80 dark:bg-[#1e1b1d]/80 backdrop-blur-xl border-t border-[#896790]/10 shadow-[0_-8px_30px_rgb(137,103,144,0.08)] rounded-t-[2rem]">
+<a href="/index.html" class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-all text-center tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Hub</span>
+</a>
+<a href="/map-fullscreen.html" class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-all text-center tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Map</span>
+</a>
+<a href="/ride-guardian-pastel.html" class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-all text-center tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined" data-icon="directions_run">directions_run</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Ride</span>
+</a>
+<a href="/cyber-shield.html" class="flex flex-col items-center justify-center bg-[#ffe1f5] dark:bg-[#6f4f76] text-[#6f4f76] dark:text-[#ffffff] rounded-2xl px-5 py-2 transition-all duration-300 hover:scale-105 text-center tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-1">Shield</span>
+</a>
+</nav>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/app.js"></script>
+</body></html>

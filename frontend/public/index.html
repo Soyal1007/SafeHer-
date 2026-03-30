@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SAFEHER | Safety Hub</title>
+<script>
+    // 1. IMMEDIATE DIAGNOSTIC SHIELD
+    window.onerror = function(msg, url, lineNo, columnNo, error) {
+        var d = document.getElementById('boot-status');
+        if (d) d.innerHTML = '<span style="color:red">ERROR: ' + msg + '</span>';
+        console.error(msg, url, lineNo);
+        return false;
+    };
+    console.log("SafeHer Bootloader: Active");
+</script>
+<script src="/js/tailwind.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link rel="icon" type="image/jpeg" href="/img/logo.jpg">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#896790", // Deep Purple
+              "secondary": "#ffe1f5", // Soft Pink
+              "tertiary": "#f9edfd", // Pale Lavender
+              "on-primary": "#ffffff",
+              "on-secondary": "#6f4f76",
+              "background": "#fff7fb",
+              "surface": "#ffffff",
+              "surface-container": "#f9f1f5",
+              "surface-container-low": "#ffffff",
+              "outline": "#896790",
+              "outline-variant": "#ffe1f5",
+              "on-surface": "#4c3a50",
+              "on-surface-variant": "#896790",
+              "error": "#b3261e",
+              "error-container": "#f9dedc"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-glow {
+            box-shadow: 0 20px 50px -10px rgba(137, 103, 144, 0.1);
+        }
+        .pulse-ring {
+            box-shadow: 0 0 0 0 rgba(179, 38, 30, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(179, 38, 30, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(179, 38, 30, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(179, 38, 30, 0); }
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary selection:text-on-secondary">
+<div id="boot-status" style="position:fixed;top:10px;right:10px;z-index:9999999;background:white;padding:5px 10px;border-radius:20px;font-size:10px;font-weight:bold;box-shadow:0 2px 10px rgba(0,0,0,0.1);color:#896790;border:1px solid #896790;">
+    BOOTING...
+</div>
+<script>
+    // Hide booting after 5 seconds if app hasn't taken over
+    setTimeout(function(){ 
+        var d = document.getElementById('boot-status');
+        if(d && d.innerHTML === 'BOOTING...') d.style.display = 'none'; 
+    }, 5000);
+</script>
+<!-- TopAppBar from COMPONENTS_11 -->
+<header class="flex justify-between items-center w-full px-6 py-4 sticky top-0 z-50 bg-[#fff7fb] dark:bg-[#1e1b1d]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 overflow-hidden">
+<img src="/img/logo.jpg" alt="SafeHer Logo" class="w-full h-full object-cover p-1 rounded-full drop-shadow-sm" />
+</div>
+<span class="font-['Space_Grotesk'] font-black text-[#6f4f76] dark:text-[#ffe1f5] tracking-widest">SAFEHER</span>
+</div>
+<div class="flex items-center gap-4">
+<button onclick="window.isTestingSensors=true; initAegisSensors();" class="text-primary bg-primary/10 hover:bg-primary/20 transition-colors px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-primary/20">
+    Verify Sensors
+</button>
+<button class="text-[#6f4f76] dark:text-[#ffe1f5] hover:bg-[#ffe1f5] dark:hover:bg-[#896790]/20 transition-colors p-2 rounded-full scale-95 active:duration-150">
+<span class="material-symbols-outlined">verified_user</span>
+</button>
+</div>
+<div class="absolute bottom-0 left-0 bg-gradient-to-b from-[#f9f1f5] to-transparent h-1 w-full"></div>
+</header>
+<main class="pt-8 pb-32 px-6 max-w-5xl mx-auto space-y-8">
+<!-- Hero Section: AI Safety Score -->
+<section class="relative min-h-[320px] md:min-h-[360px] py-12 rounded-[2.5rem] overflow-hidden hero-glow bg-white border border-primary/5 flex items-center justify-center">
+<div class="absolute inset-0 bg-gradient-to-tr from-tertiary/30 via-white to-secondary/20"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+<div class="mb-2 flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<span class="text-primary font-headline font-bold text-xs tracking-widest uppercase">Status: Protected</span>
+</div>
+<div class="relative">
+<h1 class="font-headline font-black text-8xl md:text-9xl text-on-surface tracking-tighter mb-2">98<span class="text-primary/30 text-4xl font-light">/100</span></h1>
+</div>
+<p class="font-headline text-on-surface-variant tracking-wide text-lg max-w-xs font-medium">AI SAFETY SCORE</p>
+<div class="mt-8 flex gap-6">
+<div class="flex flex-col items-center">
+<span class="text-primary font-headline font-bold text-xl">Active</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Surveillance</span>
+</div>
+<div class="w-px h-10 bg-outline-variant"></div>
+<div class="flex flex-col items-center">
+<span class="text-primary font-headline font-bold text-xl">Secure</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold">Protocol</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Status Feed -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white p-5 rounded-3xl flex items-center gap-4 border border-tertiary shadow-sm">
+<div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Stress Level</p>
+<p class="font-headline font-bold text-lg text-on-surface">Calm</p>
+</div>
+</div>
+<div class="bg-white p-5 rounded-3xl flex items-center gap-4 border border-tertiary shadow-sm">
+<div class="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center text-on-secondary">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Heartbeat</p>
+<p class="font-headline font-bold text-lg text-on-surface">72 <span class="text-xs font-normal text-on-surface-variant">bpm</span></p>
+</div>
+</div>
+<!-- City Risk Rate & Nearest Police Card -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="bg-white p-5 rounded-[2.5rem] flex items-center justify-between border border-tertiary shadow-sm overflow-hidden relative group">
+        <div class="flex items-center gap-4 z-10">
+            <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">analytics</span>
+            </div>
+            <div>
+                <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Nagpur Safety Index</p>
+                <p class="font-headline font-black text-xl text-on-surface">78% <span class="text-xs font-bold text-primary">SECURE</span></p>
+            </div>
+        </div>
+        <div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform">
+            <span class="material-symbols-outlined text-[100px]" style="font-variation-settings: 'FILL' 1;">security</span>
+        </div>
+    </div>
+    <div class="bg-white p-5 rounded-[2.5rem] flex items-center gap-4 border border-tertiary shadow-sm">
+        <div class="w-12 h-12 rounded-full bg-tertiary flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined">local_police</span>
+        </div>
+        <div>
+            <p class="text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Nearest Dispatch</p>
+            <p class="font-headline font-bold text-lg text-on-surface">400m <span class="text-xs font-normal text-on-surface-variant">away</span></p>
+        </div>
+    </div>
+</section>
+<!-- Quick Actions Grid & Safe Route -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Quick Actions -->
+<section class="lg:col-span-8 grid grid-cols-2 gap-4">
+<button class="group bg-error-container/40 p-8 rounded-[2.5rem] flex flex-col items-center justify-center gap-4 border border-error/10 hover:bg-error-container/60 transition-all active:scale-95 text-center shadow-sm">
+<div class="w-20 h-20 rounded-full bg-error flex items-center justify-center pulse-ring">
+<span class="material-symbols-outlined text-white text-4xl" data-icon="sos" style="font-variation-settings: 'FILL' 1;">sos</span>
+</div>
+<div>
+<p class="font-headline font-black text-xl text-error tracking-tight">Emergency SOS</p>
+<p class="text-xs text-error/70 font-medium mt-1 uppercase tracking-tighter">Instant Alert &amp; Audio</p>
+</div>
+</button>
+<button class="group bg-white p-8 rounded-[2.5rem] flex flex-col items-center justify-center gap-4 border border-tertiary hover:bg-tertiary/50 transition-all active:scale-95 text-center shadow-sm">
+<div class="w-16 h-16 rounded-3xl bg-secondary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-on-secondary group-hover:text-white text-3xl" data-icon="location_on">location_on</span>
+</div>
+<div>
+<p class="font-headline font-bold text-lg text-on-surface tracking-tight">Nearby Safe Zones</p>
+<p class="text-xs text-on-surface-variant font-medium mt-1">Validated verified locations</p>
+</div>
+</button>
+<button class="group bg-white p-8 rounded-[2.5rem] flex flex-col items-center justify-center gap-4 border border-tertiary hover:bg-tertiary/50 transition-all active:scale-95 text-center shadow-sm">
+<div class="w-16 h-16 rounded-3xl bg-tertiary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl" data-icon="groups">groups</span>
+</div>
+<div>
+<p class="font-headline font-bold text-lg text-on-surface tracking-tight">Guardian Network</p>
+<p class="text-xs text-on-surface-variant font-medium mt-1">3 active contacts nearby</p>
+</div>
+</button>
+<button class="group bg-white p-8 rounded-[2.5rem] flex flex-col items-center justify-center gap-4 border border-tertiary hover:bg-tertiary/50 transition-all active:scale-95 text-center shadow-sm">
+<div class="w-16 h-16 rounded-3xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-primary group-hover:text-white text-3xl" data-icon="security_update_good">security_update_good</span>
+</div>
+<div>
+<p class="font-headline font-bold text-lg text-on-surface tracking-tight">Cyber Scan</p>
+<p class="text-xs text-on-surface-variant font-medium mt-1">Network &amp; Device Secure</p>
+</div>
+</button>
+<!-- Emergency Helpline Quick-Dial -->
+<section class="col-span-2 bg-[#ffe1f5] border border-primary/20 p-8 rounded-[2.5rem] flex flex-col gap-6 shadow-sm">
+    <div class="flex justify-between items-center">
+        <h3 class="font-headline font-black text-xl text-on-secondary">Local Helplines</h3>
+        <span class="text-[10px] font-bold uppercase tracking-widest bg-white/50 px-3 py-1 rounded-full">One-Tap Dial</span>
+    </div>
+    <div class="grid grid-cols-4 gap-4">
+        <a href="tel:100" class="flex flex-col items-center gap-2 bg-white/80 p-4 rounded-3xl hover:bg-white transition-all active:scale-95 text-center">
+            <span class="text-3xl text-primary">🚓</span>
+            <span class="text-[10px] font-black">100</span>
+        </a>
+        <a href="tel:102" class="flex flex-col items-center gap-2 bg-white/80 p-4 rounded-3xl hover:bg-white transition-all active:scale-95 text-center">
+            <span class="text-3xl text-primary">🚑</span>
+            <span class="text-[10px] font-black">102</span>
+        </a>
+        <a href="tel:101" class="flex flex-col items-center gap-2 bg-white/80 p-4 rounded-3xl hover:bg-white transition-all active:scale-95 text-center">
+            <span class="text-3xl text-primary">🚒</span>
+            <span class="text-[10px] font-black">101</span>
+        </a>
+        <a href="tel:1091" class="flex flex-col items-center gap-2 bg-white/80 p-4 rounded-3xl hover:bg-white transition-all active:scale-95 text-center">
+            <span class="text-3xl text-primary">🚺</span>
+            <span class="text-[10px] font-black">1091</span>
+        </a>
+    </div>
+</section>
+
+<!-- Formal Complaint Panel -->
+<button class="col-span-2 group bg-[#ffdad6]/30 border border-[#b3261e]/20 p-6 rounded-[2.5rem] flex md:flex-row flex-col gap-4 justify-between items-center cursor-pointer hover:bg-[#ffdad6]/50 transition-all active:scale-95 shadow-sm" onclick="location.href='/cyber-shield.html'">
+    <div class="flex items-center gap-5 w-full">
+        <div class="w-12 h-12 rounded-3xl bg-[#b3261e]/10 flex shrink-0 items-center justify-center text-[#b3261e]">
+            <span class="material-symbols-outlined text-2xl">gavel</span>
+        </div>
+        <div class="flex-grow text-left">
+            <h3 class="font-headline font-black text-lg text-[#b3261e]">File Official Complaint</h3>
+            <p class="text-[10px] font-medium mt-1 text-on-surface-variant flex items-center gap-1 uppercase tracking-wider">
+                 <span class="material-symbols-outlined text-[10px]">shield</span> Evidence Extraction & Portal
+            </p>
+        </div>
+        <div class="bg-white rounded-full p-2 shadow-sm shrink-0 group-hover:bg-[#b3261e] group-hover:text-white transition-colors">
+             <span class="material-symbols-outlined text-[#896790] group-hover:text-white text-sm">arrow_forward</span>
+        </div>
+    </div>
+</button>
+</section>
+<!-- Safe Route Suggestion -->
+<section class="lg:col-span-4 bg-white rounded-[2.5rem] overflow-hidden flex flex-col border border-tertiary shadow-sm">
+<div class="relative h-48 w-full overflow-hidden">
+<img alt="Map" class="w-full h-full object-cover opacity-80 grayscale-[0.2]" data-alt="Modern city map interface with soft purple and pink accents, path highlights and safety zone markers" data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArFI8vMMViMgTmBITjQwsodjoTtKHJq7-0lxZbRYL_YCKuA-N69AMyG0OdUYdTtjV2ahvy0_zCcCnQqkr-SjoF0LvuWttGB3eMhEGpEmWcQpExwa5lsailCLMVLj6vPZofpf80N7LGU387Ozvb0cBUyS-vnfr9ojUdw-BDwzmGCaO9Vqr4LGYPGZ3jG8s9o2GOthzNLMAntx3gMbUh7xuu0mFWYnJcM1IWAhBGF6LDhqdSRdiH11Z-jcmT5748LgF3qSf5wd85lfY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white to-transparent"></div>
+<div class="absolute top-4 right-4 bg-primary px-3 py-1 rounded-full text-white text-[10px] font-bold tracking-widest uppercase">Safe Route</div>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline font-bold text-xl text-on-surface">Current Area</h3>
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-primary font-bold text-sm">20 pts</span>
+</div>
+</div>
+<div class="p-4 bg-surface-container rounded-2xl border-b-2 border-primary">
+<p class="text-[10px] text-on-surface-variant font-bold mb-1 uppercase tracking-wider">RECOMMENDED PATH</p>
+<p class="text-sm font-bold text-on-surface">Wardha Road via NH44</p>
+<div class="mt-3 flex items-center gap-2 text-xs text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+<span class="font-medium">Well-lit &amp; Populated</span>
+</div>
+</div>
+<button class="w-full py-4 bg-primary text-white rounded-2xl font-headline font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity shadow-lg shadow-primary/20" onclick="location.href='/map-fullscreen.html'">
+                    Start Navigation
+                </button>
+</div>
+<!-- Safe India Footer Section -->
+<section class="col-span-1 lg:col-span-12 mt-4">
+<button class="relative bg-gradient-to-br from-primary via-on-secondary to-primary p-12 rounded-[3.5rem] overflow-hidden shadow-xl text-center group w-full" onclick="window.open('https://cybercrime.gov.in/', '_blank')">
+        <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] animate-pulse"></div>
+        <div class="relative z-10">
+            <h2 class="font-headline font-black text-4xl md:text-6xl text-white mb-4 tracking-tighter transition-transform group-hover:scale-105 duration-700">सुरक्षित भारत</h2>
+            <p class="text-white/80 font-headline text-lg md:text-xl uppercase tracking-widest font-bold">Surakshit Bharat</p>
+            <div class="mt-8 flex justify-center gap-4">
+                <div class="h-1 w-12 bg-white/30 rounded-full"></div>
+                <div class="h-1 w-24 bg-white rounded-full"></div>
+                <div class="h-1 w-12 bg-white/30 rounded-full"></div>
+            </div>
+        </div>
+        <div class="absolute -left-20 -top-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+    </button>
+</section>
+</div>
+</main>
+<!-- BottomNavBar from COMPONENTS_11 -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-[#fff7fb]/80 dark:bg-[#1e1b1d]/80 backdrop-blur-xl border-t border-[#896790]/10 shadow-[0_-8px_30px_rgb(137,103,144,0.08)] rounded-t-[2rem]">
+<a href="/index.html" class="flex flex-col items-center justify-center bg-[#ffe1f5] dark:bg-[#6f4f76] text-[#6f4f76] dark:text-[#ffffff] rounded-2xl px-5 py-2 transition-all duration-300 tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Hub</span>
+</a>
+<a href="/map-fullscreen.html" class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Map</span>
+</a>
+<a href="/ride-guardian-pastel.html" class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined">directions_run</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Ride</span>
+</a>
+<a href="/cyber-shield.html" class="flex flex-col items-center justify-center text-[#896790] dark:text-[#896790] opacity-60 px-5 py-2 hover:opacity-100 hover:scale-105 transition-transform tap-highlight-transparent active:scale-90">
+<span class="material-symbols-outlined">security</span>
+<span class="font-['Space_Grotesk'] text-[11px] font-medium uppercase tracking-wider mt-0.5">Shield</span>
+</a>
+</nav>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/app.js?v=final_recovery_3.0"></script>
+<script src="/js/map.js?v=final_recovery_3.0"></script>
+
+<!-- EMERGENCY CONTACTS FLOATING PANEL -->
+<button id="contacts-fab" onclick="document.getElementById('contacts-panel').classList.toggle('hidden')"
+    style="position:fixed;bottom:90px;right:16px;z-index:9999;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#896790,#6f4f76);border:none;color:white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(137,103,144,0.5);cursor:pointer;transition:transform 0.2s;"
+    onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">
+    <span class="material-symbols-outlined" style="font-size:1.5rem;">contacts</span>
+</button>
+
+<div id="contacts-panel" class="hidden" style="position:fixed;bottom:155px;right:12px;z-index:10000;width:min(340px,calc(100vw - 24px));background:white;border-radius:20px;box-shadow:0 20px 60px rgba(137,103,144,0.35);border:1px solid rgba(137,103,144,0.2);overflow:hidden;font-family:'Space Grotesk',sans-serif;">
+
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#896790,#6f4f76);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+            <span class="material-symbols-outlined" style="color:white;font-size:1.4rem;">emergency_share</span>
+            <div>
+                <div style="color:white;font-weight:900;font-size:1rem;letter-spacing:0.5px;">Emergency Contacts</div>
+                <div style="color:rgba(255,255,255,0.75);font-size:0.65rem;text-transform:uppercase;letter-spacing:1px;">Notified instantly on SOS</div>
+            </div>
+        </div>
+        <button onclick="document.getElementById('contacts-panel').classList.add('hidden')" style="background:none;border:none;color:rgba(255,255,255,0.8);cursor:pointer;font-size:1.3rem;padding:4px;">✕</button>
+    </div>
+
+    <!-- Contacts list -->
+    <div style="padding:14px 16px;">
+        <div id="contacts-list" style="max-height:200px;overflow-y:auto;margin-bottom:12px;"></div>
+
+        <!-- Add new contact -->
+        <div style="border:1.5px dashed rgba(137,103,144,0.35);border-radius:14px;padding:12px;background:rgba(137,103,144,0.04);">
+            <p style="font-size:0.7rem;font-weight:700;color:#896790;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Add Contact</p>
+            <input id="contact-name-input" type="text" placeholder="Name (e.g. Mom)" maxlength="30"
+                style="width:100%;padding:9px 12px;border:1px solid rgba(137,103,144,0.3);border-radius:10px;margin-bottom:8px;font-size:0.9rem;outline:none;color:#4c3a50;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;"/>
+            <input id="contact-phone-input" type="tel" placeholder="Phone (+91 or 10-digit)" maxlength="15"
+                style="width:100%;padding:9px 12px;border:1px solid rgba(137,103,144,0.3);border-radius:10px;margin-bottom:10px;font-size:0.9rem;outline:none;color:#4c3a50;box-sizing:border-box;font-family:'Space Grotesk',sans-serif;"/>
+            <button onclick="addEmergencyContactUI()" style="width:100%;padding:10px;background:linear-gradient(135deg,#896790,#6f4f76);color:white;border:none;border-radius:10px;font-weight:900;font-size:0.85rem;cursor:pointer;letter-spacing:0.5px;">
+                + Add Contact
+            </button>
+        </div>
+
+        <!-- SMS note -->
+        <div style="margin-top:10px;background:rgba(255,193,7,0.08);border:1px solid rgba(255,193,7,0.3);border-radius:10px;padding:8px 10px;">
+            <p style="font-size:0.65rem;color:#7a6000;margin:0;line-height:1.5;">
+                <strong>📱 Real SMS:</strong> Add your <strong>TWILIO_ACCOUNT_SID</strong>, <strong>TWILIO_AUTH_TOKEN</strong> and <strong>TWILIO_PHONE_NUMBER</strong> in backend <code>.env</code> to send actual messages. Without it, SOS is logged in demo mode.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ===== Emergency Contacts UI =====
+    function renderContactsList() {
+        const list = document.getElementById('contacts-list');
+        if (!list) return;
+        const contacts = window.getEmergencyContacts ? window.getEmergencyContacts() : [];
+        if (!contacts.length) {
+            list.innerHTML = '<p style="text-align:center;color:#aaa;font-size:0.8rem;padding:12px 0;">No contacts added yet.</p>';
+            return;
+        }
+        list.innerHTML = contacts.map((c, i) => `
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(137,103,144,0.06);border-radius:12px;margin-bottom:6px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ffe1f5,#896790);display:flex;align-items:center;justify-content:center;font-weight:900;color:#6f4f76;font-size:0.8rem;flex-shrink:0;">${c.name.charAt(0).toUpperCase()}</div>
+                    <div>
+                        <div style="font-weight:700;font-size:0.85rem;color:#4c3a50;">${c.name}</div>
+                        <div style="font-size:0.72rem;color:#896790;">${c.phone}</div>
+                    </div>
+                </div>
+                <button onclick="removeContactUI(${i})" style="background:none;border:none;color:#b3261e;cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:8px;transition:background 0.2s;" onmouseover="this.style.background='rgba(179,38,30,0.08)'" onmouseout="this.style.background='none'">✕</button>
+            </div>
+        `).join('');
+    }
+
+    function addEmergencyContactUI() {
+        const name = document.getElementById('contact-name-input').value.trim();
+        const phone = document.getElementById('contact-phone-input').value.trim();
+        if (!name || !phone) { alert('Please enter both name and phone number.'); return; }
+        if (phone.replace(/[\s+\-()]/g,'').length < 10) { alert('Please enter a valid phone number.'); return; }
+        const contacts = window.getEmergencyContacts ? window.getEmergencyContacts() : [];
+        if (contacts.length >= 5) { alert('Maximum 5 emergency contacts allowed.'); return; }
+        contacts.push({ name, phone });
+        if (window.saveEmergencyContacts) window.saveEmergencyContacts(contacts);
+        document.getElementById('contact-name-input').value = '';
+        document.getElementById('contact-phone-input').value = '';
+        renderContactsList();
+    }
+
+    function removeContactUI(index) {
+        const contacts = window.getEmergencyContacts ? window.getEmergencyContacts() : [];
+        contacts.splice(index, 1);
+        if (window.saveEmergencyContacts) window.saveEmergencyContacts(contacts);
+        renderContactsList();
+    }
+
+    // Render on load (app.js may not be ready yet, so use a small delay)
+    setTimeout(renderContactsList, 500);
+    // Re-render when panel opens
+    document.getElementById('contacts-fab').addEventListener('click', () => setTimeout(renderContactsList, 50));
+</script>
+</body></html>
