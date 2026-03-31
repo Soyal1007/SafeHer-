@@ -92,5 +92,5 @@ For a detailed step-by-step on how to demo the platform, see [PRESENTATION_GUIDE
 ## 📄 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-*Built with ❤️ for safety and empowerment.*
+Built with ❤️ for safety and empowerment.
+Built by team ZenZ 
