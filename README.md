@@ -11,6 +11,20 @@ SafeHer is an AI-powered safety ecosystem designed to empower women with instant
 - **Cyber Shield**: Integrated tools for digital safety and reporting online harassment.
 - **PWA (Progressive Web App)**: Installable on any Android or iOS device for offline access and native-like performance.
 
+## 🖼️ Application showcase
+
+![Home/Hub Screen](./screenshots/home.png)
+*Safety Hub: AI safety score and system status.*
+
+![Safe Map](./screenshots/map.png)
+*Safe Map: Interactive crime data and real-time navigation.*
+
+![Ride Guardian](./screenshots/ride_guardian.png)
+*Ride Guardian: Secure cab verification and trip sharing.*
+
+![Cyber Shield](./screenshots/cyber_shield.png)
+*Cyber Shield: Forensic-grade threat detection for online harassment.*
+
 ## 🛠️ Tech Stack
 
 ### Frontend
